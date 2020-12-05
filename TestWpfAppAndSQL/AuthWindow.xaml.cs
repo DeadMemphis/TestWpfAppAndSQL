@@ -14,7 +14,9 @@ namespace TestWpfAppAndSQL
     {
         string connectionString;
         public string ViewModel { get; set; }
-        public bool Authorized;
+        
+        public event AuthEvent auth; 
+        public delegate void AuthEvent();
         public void ShowViewModel()
         {
             MessageBox.Show(ViewModel);
@@ -24,7 +26,6 @@ namespace TestWpfAppAndSQL
         {
             InitializeComponent();
             connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-            Authorized = false;
         }
 
         private void ButtonLogin_Click(object sender, RoutedEventArgs e)
@@ -51,7 +52,7 @@ namespace TestWpfAppAndSQL
                             if (ExistUser)
                             {
                                 MessageBox.Show("Authorization successful!");
-                                Authorized = true;
+                                auth?.Invoke();
                             }
                             else MessageBox.Show("Wrong login or password");
                         }
