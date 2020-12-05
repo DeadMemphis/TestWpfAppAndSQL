@@ -14,6 +14,7 @@ namespace TestWpfAppAndSQL
     {
         string connectionString;
         public string ViewModel { get; set; }
+        public bool Authorized;
         public void ShowViewModel()
         {
             MessageBox.Show(ViewModel);
@@ -23,6 +24,7 @@ namespace TestWpfAppAndSQL
         {
             InitializeComponent();
             connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            Authorized = false;
         }
 
         private void ButtonLogin_Click(object sender, RoutedEventArgs e)
@@ -45,11 +47,13 @@ namespace TestWpfAppAndSQL
                             connect.Open();
                             int temp = command.ExecuteNonQuery();
                             if (temp != 0)
-                            {
                                 ExistUser = (bool)returnUser.Value;
+                            if (ExistUser)
+                            {
+                                MessageBox.Show("Authorization successful!");
+                                Authorized = true;
                             }
-                            if(ExistUser) MessageBox.Show("Authorization successful!");
-                            else MessageBox.Show("This user does not exist");
+                            else MessageBox.Show("Wrong login or password");
                         }
                     }
                 }
