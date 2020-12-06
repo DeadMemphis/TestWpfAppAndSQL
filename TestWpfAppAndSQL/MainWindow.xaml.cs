@@ -12,27 +12,36 @@ namespace TestWpfAppAndSQL
     public partial class MainWindow : Window
     {
         private AuthWindow Authorizate;
+        private Edit EditWindow;
+        private Add AddWindow;
+        private DeleteModal DeleteWindow;
         private bool Authorized = false;
         private string connectionString;
         
+
         public MainWindow()
         {
             InitializeComponent();
             connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-            Authorizate = new AuthWindow();
-            Authorizate.auth += Close_Auth_window;
-            
         }
 
-        private void Close_Auth_window()
+        private void Close_Auth_Window()
         {
             Authorizate.Close();
             Authorized = true;
             LoadNomenclatures();
         }
 
+        private void Close_Edit_Window()
+        {
+            EditWindow.Close();
+            LoadNomenclatures();
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            Authorizate = new AuthWindow();
+            Authorizate.auth += Close_Auth_Window;
             Authorizate.Show();
         }
 
@@ -60,12 +69,32 @@ namespace TestWpfAppAndSQL
             }
         }
 
-        private void Add_Click(object sender, RoutedEventArgs e)
+        private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            if(Authorized)
+            if (Authorized)
             {
-
+                AddWindow = new Add();
+                AddWindow.Show();
             }
+        }
+
+        private void EditButton_Click(object sender, RoutedEventArgs e)
+        {
+            if(NomenclatureGrid.SelectedItem != null && Authorized)
+            {
+                EditWindow = new Edit();
+                EditWindow.editRow += Close_Edit_Window;
+                EditWindow.RowToEdit = (DataRowView)NomenclatureGrid.SelectedItem;
+                EditWindow.Show();
+            }
+        }
+
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            DeleteWindow = new DeleteModal();
+            DeleteWindow.RowToDelete = (DataRowView)NomenclatureGrid.SelectedItem;
+            DeleteWindow.ShowDialog();
+            if (DeleteWindow.DialogResult == true) LoadNomenclatures();
         }
     }
 }

@@ -7,13 +7,13 @@
         mc:Ignorable="d"
         Title="Add" Height="350" Width="300">
     <Grid>
-        <Button x:Name="ConfirmButton" Content="Confirm" Margin="65,145,64,0" VerticalAlignment="Top"/>
+        <Button x:Name="ConfirmButton" Content="Confirm" Margin="65,145,64,0" VerticalAlignment="Top" Click="ConfirmButton_Click"/>
         <Label x:Name="NameLabel" Content="Name:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
         <Label x:Name="PriceLabel" Content="Price:" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
         <Label x:Name="FromDateLabel" Content="From Date:" HorizontalAlignment="Left" Margin="10,73,0,0" VerticalAlignment="Top"/>
         <Label x:Name="ToDateLabel" Content="To Date" HorizontalAlignment="Left" Margin="10,104,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="83,14,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="199"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="83,45,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="199"/>
+        <TextBox x:Name="NameBox" HorizontalAlignment="Left" Height="23" Margin="83,14,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="199"/>
+        <TextBox x:Name="PriceBox" HorizontalAlignment="Left" Height="23" Margin="83,45,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="199"/>
         <DatePicker x:Name="FromDatePicker" HorizontalAlignment="Left" Margin="83,74,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.492,0.458" Width="133"/>
         <DatePicker x:Name="ToDatePicker" HorizontalAlignment="Left" Margin="83,105,0,0" VerticalAlignment="Top" Width="133"/>
 

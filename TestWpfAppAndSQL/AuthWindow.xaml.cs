@@ -40,8 +40,8 @@ namespace TestWpfAppAndSQL
                         using (SqlCommand command = new SqlCommand("check_authentication", connect))
                         {
                             command.CommandType = CommandType.StoredProcedure;
-                            command.Parameters.Add("@Login", SqlDbType.VarChar).Value = LoginBox.Text;
-                            command.Parameters.Add("@Pass", SqlDbType.VarChar).Value = PassBox.Text;
+                            command.Parameters.Add("@Login", SqlDbType.NVarChar).Value = LoginBox.Text;
+                            command.Parameters.Add("@Pass", SqlDbType.NVarChar).Value = PassBox.Text;
                             SqlParameter returnUser = command.Parameters.Add("@existUser", SqlDbType.Bit);
                             returnUser.Direction = ParameterDirection.Output;
                             
