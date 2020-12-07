@@ -49,7 +49,6 @@ namespace TestWpfAppAndSQL
         {
             Authorizate = new AuthWindow();
             Authorizate.auth += Close_Auth_Window;
-            Authorizate.Owner = this;
             Authorizate.Show();
         }
 
