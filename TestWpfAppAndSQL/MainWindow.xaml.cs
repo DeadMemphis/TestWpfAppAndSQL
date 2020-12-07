@@ -24,14 +24,14 @@ namespace TestWpfAppAndSQL
         {
             InitializeComponent();
             connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-            DataContext = new NomenclatureViewModel();
+            //DataContext = new NomenclatureViewModel();
         }
 
         private void Close_Auth_Window()
         {
             Authorizate.Close();
             Authorized = true;
-            //LoadNomenclatures();
+            LoadNomenclatures();
         }
 
         private void Close_Edit_Window()
