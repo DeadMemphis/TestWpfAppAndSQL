@@ -55,7 +55,8 @@ namespace TestWpfAppAndSQL
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
             AddWindow = new Add();
-            AddWindow.Show();
+            AddWindow.Model = model;
+            AddWindow.ShowDialog();
         }
 
         private void EditButton_Click(object sender, RoutedEventArgs e)

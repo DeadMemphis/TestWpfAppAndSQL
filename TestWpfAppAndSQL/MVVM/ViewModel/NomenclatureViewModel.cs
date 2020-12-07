@@ -6,10 +6,9 @@ using TestWpfAppAndSQL.Data;
 
 namespace TestWpfAppAndSQL.MVVM
 {
-    class NomenclatureViewModel : INotifyPropertyChanged
+    public class NomenclatureViewModel : INotifyPropertyChanged
     {
         private Nomenclature selectedNomenclature;
-        private Command add;
         private SQLManager sqlComponent = SQLManager.GetInstance();
 
         public ObservableCollection<Nomenclature> Nomenclatures { get; set; }
@@ -22,19 +21,6 @@ namespace TestWpfAppAndSQL.MVVM
         public void Load()
         {
             Nomenclatures = sqlComponent.LoadData();
-        }
-
-        public Command Add
-        {
-            get
-            {
-                return add ??
-                  (add = new Command(obj =>
-                  {
-                      Nomenclature nomenclature = new Nomenclature();
-                      sqlComponent.Add(nomenclature);
-                  }));
-            }
         }
 
         public Nomenclature SelectedNomenclature

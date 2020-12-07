@@ -16,6 +16,7 @@ namespace TestWpfAppAndSQL.MVVM
 
         private Command edit;
         private Command delete;
+        private Command add;
 
         private Nomenclature nomenclature;
 
@@ -24,6 +25,11 @@ namespace TestWpfAppAndSQL.MVVM
         public NomenclatureView(Nomenclature nomenclature)
         {
             this.nomenclature = nomenclature;
+        }
+
+        public NomenclatureView()
+        {
+
         }
 
         public int Id
@@ -72,6 +78,18 @@ namespace TestWpfAppAndSQL.MVVM
             {
                 dateTo = value;
                 OnPropertyChanged("DateTo");
+            }
+        }
+
+        public Command Add
+        {
+            get
+            {
+                return add ??
+                  (add = new Command(obj =>
+                  {
+                      if (nomenclature != null) sqlComponent.Add(nomenclature);
+                  }));
             }
         }
 
