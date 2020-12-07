@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Windows;
-using System.Data.SqlClient;
-using System.Configuration;
-using System.Data;
 using System.Windows.Controls;
 using TestWpfAppAndSQL.MVVM;
 
@@ -37,7 +34,7 @@ namespace TestWpfAppAndSQL
         {
             NomenclatureView nomView = new NomenclatureView(NomenclatureToEdit);
             nomView.Edit.Execute(nomenclatureToEdit);
-            editRow?.Invoke();
+            this.DialogResult = true;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

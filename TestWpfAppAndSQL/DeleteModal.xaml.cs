@@ -1,8 +1,5 @@
-﻿using System;
-using System.Configuration;
-using System.Data;
-using System.Data.SqlClient;
-using System.Windows;
+﻿using System.Windows;
+using TestWpfAppAndSQL.MVVM;
 
 
 namespace TestWpfAppAndSQL
@@ -12,55 +9,29 @@ namespace TestWpfAppAndSQL
     /// </summary>
     public partial class DeleteModal : Window
     {
-        private DataRowView rowToDelete;
-        private string connectionString;
+        private Nomenclature nomenclatureToDelete;
+        public NomenclatureViewList Model { get; set; }
 
-        public DataRowView RowToDelete
+        public Nomenclature NomenclatureToDelete
         {
-            get { return rowToDelete; }
+            get { return nomenclatureToDelete; }
             set
             {
-                rowToDelete = value;
+                nomenclatureToDelete = value;
             }
         }
 
         public DeleteModal()
         {
             InitializeComponent();
-            connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         }
 
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                using (SqlConnection connect = new SqlConnection(connectionString))
-                {
-                    using (SqlCommand command = new SqlCommand("iud_nomenclature", connect))
-                    {
-                        command.CommandType = CommandType.StoredProcedure;
-                        command.Parameters.Add("@Id", SqlDbType.Int).Value = rowToDelete.Row.ItemArray[0];
-                        command.Parameters.Add("@FLAG", SqlDbType.NVarChar).Value = 'D';
-                        SqlParameter returnResult = new SqlParameter("returnVal", SqlDbType.Int);
-                        returnResult.Direction = ParameterDirection.ReturnValue;
-                        command.Parameters.Add(returnResult);
+            NomenclatureView nomView = new NomenclatureView(NomenclatureToDelete);
+            nomView.Delete.Execute(nomenclatureToDelete);
+            this.DialogResult = true;
 
-                        connect.Open();
-                        command.ExecuteScalar();
-                        int result = (int)returnResult.Value;
-
-                        if (result == 0)
-                        {
-                            MessageBox.Show("Deleted!");
-                            this.DialogResult = true;
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
         }
 
         private void CanсelButton_Click(object sender, RoutedEventArgs e)

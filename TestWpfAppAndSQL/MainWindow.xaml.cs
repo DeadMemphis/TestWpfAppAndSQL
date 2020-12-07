@@ -1,10 +1,5 @@
-﻿using System;
-using System.Windows;
-using System.Data.SqlClient;
-using System.Configuration;
-using System.Data;
+﻿using System.Windows;
 using TestWpfAppAndSQL.MVVM;
-using TestWpfAppAndSQL.Data;
 
 namespace TestWpfAppAndSQL
 {
@@ -18,7 +13,7 @@ namespace TestWpfAppAndSQL
         private Add AddWindow;
         private DeleteModal DeleteWindow;
         private bool Authorized = false;
-        private NomenclatureViewModel model = new NomenclatureViewModel();
+        private NomenclatureViewList model = new NomenclatureViewList();
 
 
         public MainWindow()
@@ -40,11 +35,6 @@ namespace TestWpfAppAndSQL
             DeleteButton.IsEnabled = true;
         }
 
-        private void Close_Edit_Window()
-        {
-            EditWindow.Close();
-        }
-
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             Authorizate = new AuthWindow();
@@ -55,8 +45,10 @@ namespace TestWpfAppAndSQL
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
             AddWindow = new Add();
-            AddWindow.Model = model;
             AddWindow.ShowDialog();
+            model.Load();
+            NomenclatureGrid.DataContext = model;
+            NomenclatureGrid.ItemsSource = model.Nomenclatures;
         }
 
         private void EditButton_Click(object sender, RoutedEventArgs e)
@@ -64,18 +56,19 @@ namespace TestWpfAppAndSQL
             if (NomenclatureGrid.SelectedItem != null && Authorized)
             {
                 EditWindow = new Edit();
-                EditWindow.editRow += Close_Edit_Window;
                 EditWindow.NomenclatureToEdit = (Nomenclature)NomenclatureGrid.SelectedItem;
-                EditWindow.Show();
+                EditWindow.ShowDialog();
             }
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
             DeleteWindow = new DeleteModal();
-            DeleteWindow.RowToDelete = (DataRowView)NomenclatureGrid.SelectedItem;
+            DeleteWindow.NomenclatureToDelete = (Nomenclature)NomenclatureGrid.SelectedItem;
             DeleteWindow.ShowDialog();
-            //if (DeleteWindow.DialogResult == true) LoadNomenclatures();
+            model.Load();
+            NomenclatureGrid.DataContext = model;
+            NomenclatureGrid.ItemsSource = model.Nomenclatures;
         }
     }
 }

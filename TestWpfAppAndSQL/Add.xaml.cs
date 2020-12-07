@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Windows;
-using System.Data.SqlClient;
-using System.Configuration;
-using System.Data;
 using TestWpfAppAndSQL.MVVM;
 
 namespace TestWpfAppAndSQL
@@ -12,7 +9,6 @@ namespace TestWpfAppAndSQL
     /// </summary>
     public partial class Add : Window
     {
-        public NomenclatureViewModel Model { get; set; }
         private NomenclatureView nomenclatureView;
         private Nomenclature nomenclature;
 
@@ -28,7 +24,6 @@ namespace TestWpfAppAndSQL
             {
                 nomenclatureView = new NomenclatureView(nomenclature);
                 nomenclatureView.Add.Execute(nomenclature);
-                Model.Load();
                 this.DialogResult = true;
             }
         }

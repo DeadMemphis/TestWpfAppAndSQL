@@ -1,9 +1,4 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
-using System.Data.SqlClient;
-using System.Configuration;
-using System.Data;
+﻿using System.Windows;
 using TestWpfAppAndSQL.MVVM;
 
 namespace TestWpfAppAndSQL

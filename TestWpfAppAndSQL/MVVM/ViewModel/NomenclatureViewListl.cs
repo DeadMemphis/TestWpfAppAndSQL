@@ -1,19 +1,18 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using TestWpfAppAndSQL.Data;
 
 namespace TestWpfAppAndSQL.MVVM
 {
-    public class NomenclatureViewModel : INotifyPropertyChanged
+    public class NomenclatureViewList : INotifyPropertyChanged
     {
         private Nomenclature selectedNomenclature;
         private SQLManager sqlComponent = SQLManager.GetInstance();
 
         public ObservableCollection<Nomenclature> Nomenclatures { get; set; }
 
-        public NomenclatureViewModel()
+        public NomenclatureViewList()
         {
             Nomenclatures = sqlComponent.LoadData();
         }
