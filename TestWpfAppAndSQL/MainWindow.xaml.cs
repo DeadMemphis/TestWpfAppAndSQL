@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Configuration;
 using System.Data;
 using TestWpfAppAndSQL.MVVM;
+using TestWpfAppAndSQL.Data;
 
 namespace TestWpfAppAndSQL
 {
@@ -17,72 +18,50 @@ namespace TestWpfAppAndSQL
         private Add AddWindow;
         private DeleteModal DeleteWindow;
         private bool Authorized = false;
-        private string connectionString;
-        
+        private NomenclatureViewModel model = new NomenclatureViewModel();
+
 
         public MainWindow()
         {
             InitializeComponent();
-            connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-            //DataContext = new NomenclatureViewModel();
+            AddButton.IsEnabled = false;
+            EditButton.IsEnabled = false;
+            DeleteButton.IsEnabled = false;
         }
 
         private void Close_Auth_Window()
         {
             Authorizate.Close();
             Authorized = true;
-            LoadNomenclatures();
+            NomenclatureGrid.DataContext = model;
+            NomenclatureGrid.ItemsSource = model.Nomenclatures;
+            AddButton.IsEnabled = true;
+            EditButton.IsEnabled = true;
+            DeleteButton.IsEnabled = true;
         }
 
         private void Close_Edit_Window()
         {
             EditWindow.Close();
-            LoadNomenclatures();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             Authorizate = new AuthWindow();
             Authorizate.auth += Close_Auth_Window;
+            Authorizate.Owner = this;
             Authorizate.Show();
-        }
-
-        private void LoadNomenclatures()
-        {
-            DataTable Nomenclature = new DataTable();
-            try
-            {
-                using (SqlConnection connect = new SqlConnection(connectionString))
-                {
-                    using (SqlDataAdapter adapter = new SqlDataAdapter(new SqlCommand("sel_nomenclature", connect)
-                    {
-                        CommandType = CommandType.StoredProcedure
-                    }))
-                    {
-                        connect.Open();
-                        adapter.Fill(Nomenclature);
-                        NomenclatureGrid.ItemsSource = Nomenclature.DefaultView;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Authorized)
-            {
-                AddWindow = new Add();
-                AddWindow.Show();
-            }
+            AddWindow = new Add();
+            AddWindow.Show();
         }
 
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
-            if(NomenclatureGrid.SelectedItem != null && Authorized)
+            if (NomenclatureGrid.SelectedItem != null && Authorized)
             {
                 EditWindow = new Edit();
                 EditWindow.editRow += Close_Edit_Window;
@@ -96,7 +75,7 @@ namespace TestWpfAppAndSQL
             DeleteWindow = new DeleteModal();
             DeleteWindow.RowToDelete = (DataRowView)NomenclatureGrid.SelectedItem;
             DeleteWindow.ShowDialog();
-            if (DeleteWindow.DialogResult == true) LoadNomenclatures();
+            //if (DeleteWindow.DialogResult == true) LoadNomenclatures();
         }
     }
 }

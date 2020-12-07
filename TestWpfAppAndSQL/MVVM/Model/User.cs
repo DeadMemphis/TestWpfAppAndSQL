@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using TestWpfAppAndSQL.Data;
 
 namespace TestWpfAppAndSQL.MVVM
 {
     class User : INotifyPropertyChanged
     {
+        private Command check;
         private string login;
         private string pass;
 
@@ -27,7 +29,28 @@ namespace TestWpfAppAndSQL.MVVM
                 OnPropertyChanged("Password");
             }
         }
-        
+
+        public bool Authorized { get; set; }
+
+        public Command CheckAuthenticate
+        {
+            get
+            {
+                return check ??
+                (check = new Command(obj =>
+                {
+                    User user = obj as User;
+                    if (user != null)
+                        Authorized = SQLManager.GetInstance().CheckAuth(user);
+                }));
+            }
+        }
+
+        public bool CanCheck
+        {
+            get { return !string.IsNullOrEmpty(Login) && !string.IsNullOrEmpty(Password); }
+        }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")

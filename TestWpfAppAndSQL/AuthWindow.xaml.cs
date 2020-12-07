@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Data.SqlClient;
 using System.Configuration;
 using System.Data;
+using TestWpfAppAndSQL.MVVM;
 
 namespace TestWpfAppAndSQL
 {
@@ -12,56 +13,29 @@ namespace TestWpfAppAndSQL
     /// </summary>
     public partial class AuthWindow : Window
     {
-        string connectionString;
-        public string ViewModel { get; set; }
-        
         public event AuthEvent auth; 
         public delegate void AuthEvent();
-        public void ShowViewModel()
-        {
-            MessageBox.Show(ViewModel);
-        }
+
+        private User user = new User();
 
         public AuthWindow()
         {
             InitializeComponent();
-            connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         }
 
         private void ButtonLogin_Click(object sender, RoutedEventArgs e)
         {
-            bool ExistUser = false;
-            try
+            user.Login = LoginBox.Text;
+            user.Password = PassBox.Password;
+            if (LoginBox.Text != null && PassBox.Password != null)
             {
-                using (SqlConnection connect = new SqlConnection(connectionString))
+                user.CheckAuthenticate.Execute(user);
+                if (user.Authorized)
                 {
-                    if (LoginBox.Text != null && PassBox.Text != null)
-                    {
-                        using (SqlCommand command = new SqlCommand("check_authentication", connect))
-                        {
-                            command.CommandType = CommandType.StoredProcedure;
-                            command.Parameters.Add("@Login", SqlDbType.NVarChar).Value = LoginBox.Text;
-                            command.Parameters.Add("@Pass", SqlDbType.NVarChar).Value = PassBox.Text;
-                            SqlParameter returnUser = command.Parameters.Add("@existUser", SqlDbType.Bit);
-                            returnUser.Direction = ParameterDirection.Output;
-                            
-                            connect.Open();
-                            int temp = command.ExecuteNonQuery();
-                            if (temp != 0)
-                                ExistUser = (bool)returnUser.Value;
-                            if (ExistUser)
-                            {
-                                MessageBox.Show("Authorization successful!");
-                                auth?.Invoke();
-                            }
-                            else MessageBox.Show("Wrong login or password");
-                        }
-                    }
+                    MessageBox.Show("Authorization successful!");
+                    auth?.Invoke();
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
+                else MessageBox.Show("Wrong login or password");
             }
         }
     }

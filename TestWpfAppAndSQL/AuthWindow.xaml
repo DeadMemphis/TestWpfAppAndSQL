@@ -7,11 +7,16 @@
         mc:Ignorable="d"
         Title="AuthWindow" Height="400" Width="300">
     <Grid>
-        <Button x:Name="ButtonLogin" Content="Sign In" HorizontalAlignment="Left" Margin="87,227,0,0" VerticalAlignment="Top" Width="120" Height="24" Click="ButtonLogin_Click"/>
-        <TextBox x:Name="PassBox" HorizontalAlignment="Left" Height="23" Margin="87,172,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="LoginBox" HorizontalAlignment="Left" Height="23" Margin="87,105,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Button x:Name="ButtonLogin" 
+                Content="Sign In" 
+                HorizontalAlignment="Left" 
+                Margin="87,227,0,0" 
+                VerticalAlignment="Top"
+                Width="120" Height="24" Click="ButtonLogin_Click"/>
+        <TextBox x:Name="LoginBox" HorizontalAlignment="Left" Height="22" Margin="87,105,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <Label x:Name="LoginLabel" Content="Login:" HorizontalAlignment="Left" Margin="87,74,0,0" VerticalAlignment="Top" Width="120"/>
         <Label x:Name="PassLabel" Content="Password:" HorizontalAlignment="Left" Margin="87,141,0,0" VerticalAlignment="Top" Width="120"/>
+        <PasswordBox x:Name="PassBox" HorizontalAlignment="Left" Margin="87,172,0,0" VerticalAlignment="Top" Width="120" Height="22"/>
 
     </Grid>
 </Window>
