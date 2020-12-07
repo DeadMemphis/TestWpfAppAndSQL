@@ -3,6 +3,7 @@ using System.Windows;
 using System.Data.SqlClient;
 using System.Configuration;
 using System.Data;
+using TestWpfAppAndSQL.MVVM;
 
 namespace TestWpfAppAndSQL
 {
@@ -23,13 +24,14 @@ namespace TestWpfAppAndSQL
         {
             InitializeComponent();
             connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            DataContext = new NomenclatureViewModel();
         }
 
         private void Close_Auth_Window()
         {
             Authorizate.Close();
             Authorized = true;
-            LoadNomenclatures();
+            //LoadNomenclatures();
         }
 
         private void Close_Edit_Window()

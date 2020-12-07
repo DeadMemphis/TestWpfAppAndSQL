@@ -11,6 +11,13 @@ namespace TestWpfAppAndSQL.MVVM
         private DateTime dateFrom;
         private DateTime dateTo;
 
+        //private Nomenclature nomenclature;
+
+        //public Nomenclature(Nomenclature nomenclature)
+        //{
+        //    this.nomenclature = nomenclature;
+        //}
+
         public string Name
         {
             get { return name; }
