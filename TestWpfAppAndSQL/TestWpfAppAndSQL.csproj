@@ -105,6 +105,7 @@
     <Compile Include="MVVM\Command\Command.cs" />
     <Compile Include="MVVM\Model\Nomenclature.cs" />
     <Compile Include="MVVM\Model\User.cs" />
+    <Compile Include="MVVM\ViewModel\NomenclatureView.cs" />
     <Compile Include="MVVM\ViewModel\NomenclatureViewModel.cs" />
     <Compile Include="MVVM\ViewModel\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Configuration;
 using System.Data;
 using System.Windows.Controls;
+using TestWpfAppAndSQL.MVVM;
 
 namespace TestWpfAppAndSQL
 {
@@ -12,79 +13,78 @@ namespace TestWpfAppAndSQL
     /// </summary>
     public partial class Edit : Window
     {
-        private string connectionString;
-        private DataRowView rowToEdit;
-        private DateTime From;
-        private DateTime To;
+        private Nomenclature nomenclatureToEdit;
         private int selectedRowId;
+        private bool loaded = false;
+
         public event EditEvent editRow;
         public delegate void EditEvent();
 
-        public DataRowView RowToEdit
+        public Nomenclature NomenclatureToEdit
         {
-            get { return rowToEdit; }
+            get { return nomenclatureToEdit; }
             set
             {
-                rowToEdit = value;
+                nomenclatureToEdit = value;
             }
         }
         public Edit()
         {
             InitializeComponent();
-            connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            if (NameBox.Text != null && PriceBox.Text != null)
-            {
-                try
-                {
-                    using (SqlConnection connect = new SqlConnection(connectionString))
-                    {
-                        using (SqlCommand command = new SqlCommand("iud_nomenclature", connect))
-                        {
-                            command.CommandType = CommandType.StoredProcedure;
-                            command.Parameters.Add("@Id", SqlDbType.Int).Value = selectedRowId;
-                            command.Parameters.Add("@Name", SqlDbType.NVarChar).Value = NameBox.Text;
-                            decimal price;
-                            Decimal.TryParse(PriceBox.Text, out price);
-                            command.Parameters.Add("@Price", SqlDbType.Decimal).Value = price;
-                            command.Parameters.Add("@FromDate", SqlDbType.Date).Value = FromDatePicker.SelectedDate;
-                            command.Parameters.Add("@ToDate", SqlDbType.Date).Value = ToDatePicker.SelectedDate;
-                            command.Parameters.Add("@FLAG", SqlDbType.NVarChar).Value = 'U';
-                            SqlParameter returnResult = new SqlParameter("returnVal", SqlDbType.Int);
-                            returnResult.Direction = ParameterDirection.ReturnValue;
-                            command.Parameters.Add(returnResult);
-
-                            connect.Open();
-                            command.ExecuteScalar();
-                            int result = (int)returnResult.Value;
-
-                            if (result == 0)
-                            {
-                                MessageBox.Show("Changes saved!");
-                                editRow?.Invoke();
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-            }
+            NomenclatureView nomView = new NomenclatureView(NomenclatureToEdit);
+            nomView.Edit.Execute(nomenclatureToEdit);
+            editRow?.Invoke();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            selectedRowId = (int)rowToEdit.Row.ItemArray[0];
-            NameBox.Text = rowToEdit.Row.ItemArray[1].ToString();
-            PriceBox.Text = rowToEdit.Row.ItemArray[2].ToString();
-            DateTime.TryParse(rowToEdit.Row.ItemArray[3].ToString(), out From);
-            FromDatePicker.SelectedDate = From;
-            DateTime.TryParse(rowToEdit.Row.ItemArray[4].ToString(), out To);
-            ToDatePicker.SelectedDate = To;
+            selectedRowId = nomenclatureToEdit.Id;
+            NameBox.Text = nomenclatureToEdit.Name;
+            PriceBox.Text = nomenclatureToEdit.Price.ToString();
+            FromDatePicker.SelectedDate = nomenclatureToEdit.DateFrom;
+            ToDatePicker.SelectedDate = nomenclatureToEdit.DateTo;
+            SaveButton.IsEnabled = false;
+            loaded = true;
+        }
+
+        private void NameBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (loaded)
+            {
+                nomenclatureToEdit.Name = NameBox.Text;
+                SaveButton.IsEnabled = true;
+            }
+        }
+
+        private void PriceBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (loaded)
+            {
+                nomenclatureToEdit.Price = Decimal.Parse(PriceBox.Text);
+                SaveButton.IsEnabled = true;
+            }
+        }
+
+        private void FromDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (loaded)
+            {
+                nomenclatureToEdit.DateFrom = (DateTime)FromDatePicker.SelectedDate;
+                SaveButton.IsEnabled = true;
+            }
+        }
+
+        private void ToDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (loaded)
+            {
+                nomenclatureToEdit.DateTo = (DateTime)ToDatePicker.SelectedDate;
+                SaveButton.IsEnabled = true;
+            }
         }
     }
 }

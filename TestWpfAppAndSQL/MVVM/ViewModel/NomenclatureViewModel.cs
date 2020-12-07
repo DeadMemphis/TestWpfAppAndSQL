@@ -10,8 +10,6 @@ namespace TestWpfAppAndSQL.MVVM
     {
         private Nomenclature selectedNomenclature;
         private Command add;
-        private Command edit;
-        private Command delete;
         private SQLManager sqlComponent = SQLManager.GetInstance();
 
         public ObservableCollection<Nomenclature> Nomenclatures { get; set; }
@@ -36,39 +34,6 @@ namespace TestWpfAppAndSQL.MVVM
                       Nomenclature nomenclature = new Nomenclature();
                       sqlComponent.Add(nomenclature);
                   }));
-            }
-        }
-
-        public Command Edit
-        {
-            get
-            {
-                return edit ??
-                  (edit = new Command(obj =>
-                  {
-                      Nomenclature nomenclature = obj as Nomenclature;
-                      if (nomenclature != null)
-                      {
-                          sqlComponent.Edit(nomenclature);
-                      }
-                  }));
-            }
-        }
-
-        public Command Delete
-        {
-            get
-            {
-                return delete ??
-                  (delete = new Command(obj =>
-                  {
-                      Nomenclature nomenclature = obj as Nomenclature;
-                      if (nomenclature != null)
-                      {
-                          sqlComponent.Delete(nomenclature.Id);
-                      }
-                  },
-                 (obj) => Nomenclatures.Count > 0));
             }
         }
 

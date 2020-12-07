@@ -1,10 +1,12 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using System.ComponentModel;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using TestWpfAppAndSQL.Data;
 
 namespace TestWpfAppAndSQL.MVVM
 {
-    public class Nomenclature : INotifyPropertyChanged
+    public class NomenclatureView : INotifyPropertyChanged
     {
         private int id;
         private string name;
@@ -12,12 +14,17 @@ namespace TestWpfAppAndSQL.MVVM
         private DateTime dateFrom;
         private DateTime dateTo;
 
-        //private Nomenclature nomenclature;
+        private Command edit;
+        private Command delete;
 
-        //public Nomenclature(Nomenclature nomenclature)
-        //{
-        //    this.nomenclature = nomenclature;
-        //}
+        private Nomenclature nomenclature;
+
+        private SQLManager sqlComponent = SQLManager.GetInstance();
+
+        public NomenclatureView(Nomenclature nomenclature)
+        {
+            this.nomenclature = nomenclature;
+        }
 
         public int Id
         {
@@ -65,6 +72,38 @@ namespace TestWpfAppAndSQL.MVVM
             {
                 dateTo = value;
                 OnPropertyChanged("DateTo");
+            }
+        }
+
+        public Command Edit
+        {
+            get
+            {
+                return edit ??
+                  (edit = new Command(obj =>
+                  {
+                      Nomenclature nomenclature = obj as Nomenclature;
+                      if (nomenclature != null)
+                      {
+                          sqlComponent.Edit(nomenclature);
+                      }
+                  }));
+            }
+        }
+
+        public Command Delete
+        {
+            get
+            {
+                return delete ??
+                  (delete = new Command(obj =>
+                  {
+                      Nomenclature nomenclature = obj as Nomenclature;
+                      if (nomenclature != null)
+                      {
+                          sqlComponent.Delete(nomenclature.Id);
+                      }
+                  }));
             }
         }
 

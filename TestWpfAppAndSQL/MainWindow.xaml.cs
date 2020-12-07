@@ -64,7 +64,7 @@ namespace TestWpfAppAndSQL
             {
                 EditWindow = new Edit();
                 EditWindow.editRow += Close_Edit_Window;
-                EditWindow.RowToEdit = (DataRowView)NomenclatureGrid.SelectedItem;
+                EditWindow.NomenclatureToEdit = (Nomenclature)NomenclatureGrid.SelectedItem;
                 EditWindow.Show();
             }
         }

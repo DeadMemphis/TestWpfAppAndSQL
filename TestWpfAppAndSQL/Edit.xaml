@@ -12,10 +12,10 @@
         <Label x:Name="PriceLabel" Content="Price:" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
         <Label x:Name="FromDateLabel" Content="From Date:" HorizontalAlignment="Left" Margin="10,73,0,0" VerticalAlignment="Top"/>
         <Label x:Name="ToDateLabel" Content="To Date" HorizontalAlignment="Left" Margin="10,104,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="NameBox" HorizontalAlignment="Left" Height="23" Margin="83,14,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="199"/>
-        <TextBox x:Name="PriceBox" HorizontalAlignment="Left" Height="23" Margin="83,45,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="199"/>
-        <DatePicker x:Name="FromDatePicker" HorizontalAlignment="Left" Margin="83,74,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.492,0.458" Width="133"/>
-        <DatePicker x:Name="ToDatePicker" HorizontalAlignment="Left" Margin="83,105,0,0" VerticalAlignment="Top" Width="133"/>
+        <TextBox x:Name="NameBox" HorizontalAlignment="Left" Height="23" Margin="83,14,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="199" TextChanged="NameBox_TextChanged"/>
+        <TextBox x:Name="PriceBox" HorizontalAlignment="Left" Height="23" Margin="83,45,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="199" TextChanged="PriceBox_TextChanged"/>
+        <DatePicker x:Name="FromDatePicker" HorizontalAlignment="Left" Margin="83,74,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.492,0.458" Width="133" SelectedDateChanged="FromDatePicker_SelectedDateChanged"/>
+        <DatePicker x:Name="ToDatePicker" HorizontalAlignment="Left" Margin="83,105,0,0" VerticalAlignment="Top" Width="133" SelectedDateChanged="ToDatePicker_SelectedDateChanged"/>
 
     </Grid>
 </Window>
